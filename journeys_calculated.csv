@@ -1,0 +1,6 @@
+origin,destination,mode,transit_mode,is_return,mileage
+London,Edinbrough,transit,train,False,400.48
+Bowness-on-Windermere,Leeds,driving,,True,233.75
+Cornwall,Sheffield,driving,,False,339.1
+Doncaster,London,transit,train,True,318.52
+SW1A 2AA,DL12 8PR,driving,,True,506.53

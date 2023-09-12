@@ -39,27 +39,33 @@ def calc_distance(origin:str, destination:str, dist_unit:str="mi", region:str="u
         - The function utilizes the Google Maps Distance Matrix API to calculate distances.
     """
     
+    # if blank origin or destination, raise exception
     if not origin or not destination:
         raise Exception("Missing start or end location parameters.")
     
+    # initiate googlemaps API using API KEY
     gmaps = googlemaps.Client(key=cf.api_key)
     
+    # get API response given appropriate args
     if not transit_mode:
         resp = gmaps.distance_matrix(origin, destination, mode=mode, region=region, units="imperial")
     else:
         resp = gmaps.distance_matrix(origin, destination, mode=mode, transit_mode=transit_mode, region=region, units="imperial")
         
+    # take response and try to calculate journey distance in appropriate unit    
     try:
-        dist = resp["rows"][0]["elements"][0]["distance"]["value"]
+        dist = resp["rows"][0]["elements"][0]["distance"]["value"] #km of journey
         if is_return:
-            dist *= 2
+            dist *= 2 # double distance if journey is return
         if dist_unit == "mi":
-            dist = round(dist/1000/1.609, 2)
-        elif dist_unit != "km":
+            dist = round(dist/1000/1.609, 2) # convert to mileage
+        elif dist_unit != "km": # raise value error if unit is invalid
             raise ValueError("Unrecognised `dist_unit` value: Expected `mi` or `km`.")
+    # raise exception if response parsing fails
     except:
         raise Exception("API Response not recognised. Check start and end location parameters or validity of API key.")
     
+    #return distance
     return dist
             
     
